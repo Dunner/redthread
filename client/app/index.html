@@ -1,0 +1,299 @@
+<!doctype html>
+<html class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="fragment" content="!">
+    <meta name="viewport" content="width=device-width">
+    <base href="/">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css(.) styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="styles/reset.css">
+    <link rel="stylesheet" href="styles/stylus.css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,800,700,600,300' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+    <!-- endbuild -->
+  </head>
+  <body ng-app="redthread">
+    <!--[if lt IE 7]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    <!-- Add your site or application content here -->
+    <div dialogue-editor id="dialogue-editor">
+
+      <div pan id="viewport">
+        <div id="threadwrapper">
+
+          <div move
+            ng-repeat="thread in threads"
+            class="dedit-tbox"
+            style="left:{{thread.pos.x}}px; top:{{thread.pos.y}}px"
+            increment="{{thread.increment}}">
+
+            <div class="top clear">
+              <div class="profilecircle">
+                <svg width="100%" height-"100%" dnr-avatar load="{{thread.character}}" viewBox="90 150 550 1052"></svg>
+              </div>
+              <div class="increment">
+                #{{thread.increment}}
+              </div>
+            </div>
+
+            <div class="middle">
+              {{thread.text}}
+            </div>
+
+            <div class="choice clear" ng-show="thread.choices.length < 1">
+              <div class="alternative"></div>
+              <div class="go-to">
+                {{thread.toThread}}
+                <div class="port-out" ng-show="thread.toThread > -1">
+                  <div thread-connector fromthread="{{thread.increment}}" tothread="{{thread.toThread}}" class="line"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="choice clear" ng-repeat="choice in thread.choices" ng-show="thread.choices.length > 0">
+              <div class="alternative">
+                {{choice.text}}
+              </div>
+              <div class="go-to">
+                {{choice.toThread}}
+                <div class="port-out" ng-show="choice.toThread > -1">
+                  <div thread-connector fromthread="{{thread.increment}}" tothread="{{choice.toThread}}" class="line"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="module-background" ng-show="threadEdit" ng-click="editThread()"></div>
+      <div id="form-module" class="module" ng-show="threadEdit">
+
+        <form class="thread-form" ng-submit="updateThread(); editThread()">
+
+          <div class="tform-label">
+            <span ng-click="editChar()">Character:</span>
+          </div>
+
+          <div class="tform-inset">
+            <svg width="30%" height="100%" dnr-avatar load="{{thread.character}}" viewBox="30 30 650 750" ng-show="thread.character"></svg>
+            <br>
+            <select ng-model="thread.character" ng-options="character._id as character.name for character in characters" ng-change="changeCharacter(thread.character)">
+              <option value="">-- No Character --</option>
+            </select>
+            <span ng-click="changeCharacter(thread.character); editChar()" ng-show="thread.character" class="tform-inset-btn">Edit</span>
+            <span ng-click="createCharacter()" class="tform-inset-btn">New character</span>
+          </div>
+
+          <div class="tform-label">
+            <span>Text:</span>
+          </div>
+
+          <div class="tform-inset">
+            <textarea name="text" placeholder="Text" ng-model="thread.text" autofocus="" ></textarea>
+          </div>
+
+          <div class="tform-label">
+            <span>Choices:</span>
+          </div>
+          <div class="tform-inset">
+            <div class="choices">
+              <div class="choice clear" ng-repeat="choice in thread.choices">
+                <div class="alternative">
+                  <input name="choice" type="text" placeholder="Choice {{$index}}" ng-model="choice.text" autofocus="" /></div>
+                <div class="go-to">goto:
+                  <select name="mySelect"
+                    ng-options="threado.increment as threado.increment for threado in threads"
+                    ng-model="choice.toThread">
+                  </select>
+                </div>
+                <div class="remove-choice" ng-click="removeChoice($index)"></div>
+              </div>
+              <div class="choice clear" ng-show="thread.choices.length < 1">
+                <div class="alternative">Go To:</div>
+                <div class="go-to">goto:
+                  <select name="mySelect2"
+                    ng-options="threado.increment as threado.increment for threado in threads"
+                    ng-model="thread.toThread">
+                  </select>
+                </div>
+              </div>
+              <span ng-click="addChoice()" class="tform-inset-btn">Add Choice</span>
+            </div>
+          </div>
+          <br>
+          <button type="submit" class="button button-ok">Update</button>
+          <div class="button button-cancel" ng-click="removeThread(thread._id);" ng-show="thread.increment !== 0">Delete</div>
+          <div class="button button-cancel" ng-click="editThread()">Cancel</div>
+
+          <div style="clear:both"></div>
+        </form>
+      </div>
+
+
+      <div class="module-background" ng-show="charEdit" ng-click="editChar()"></div>
+      <div id="form-module" class="module" ng-show="charEdit">
+
+        
+
+        <div class="bg-dCont f-white" dnr-paperdoll style="margin-bottom:15px">
+
+          <div style="padding: 20px 20px 0 20px">
+            <input name="charactername" type="text" placeholder="John Doe" ng-model="character.name" autofocus="" style="float:none; width: 100%!important;"/>
+          </div>
+
+          <ul class="charEdit">
+            <li>
+              <svg width="80%" height-"100%" viewBox="0 0 744 1052" id="paperdoll"></svg>
+
+              <div class="colors">
+                <div class="testbtn button" ng-click="randomize()" style="position:Absolute; bottom:110%; left: 10%; width:80%; height:50px; line-height:50px"><h3>Randomize</h3></div>
+                <ul class="colorSwap">
+                  <li ng-repeat="color in colors[palette]"
+                      ng-style="{ 'background' : color}"
+                      ng-click="changeColor(toEdit, color, inventoryOption)"
+                      >
+                  </li>
+                </ul>
+                <div id="colorPick" style="position: relative">
+                  <div type="text" ng-model="specificColor" colorpicker-parent="true"></div>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="controls">
+                <nav class="options toprow">
+                  <ul>
+                    <li ng-repeat="item in optionsTree | toArray | orderBy : 'item.index'" ng-click="changeOption(item.$key);" ng-class="{'active': option === item.$key}"><a>{{item.$key}}</a></li>
+                  </ul>
+                </nav>
+                <nav class="options botrow">
+                  <ul>
+                    <li ng-repeat="item in optionsTree[option].options | toArray | orderBy : 'item.index'" ng-click="changeEdit(item.$key);" ng-class="{'active': edit === item.$key}"><a>{{item.$key}}</a></li>
+                  </ul>
+                </nav>
+              </div>
+              <div class="inventory">
+                <div class="itemWrapper" ng-click="updateDoll(option, edit, inventoryOption[0], '')" ng-show="optionsTree[option].options[edit].removeable">
+                  <svg viewBox="0 0 744 1052" id="invEdit"></svg>
+                </div>
+                <div class="itemWrapper" ng-repeat="item in inventory" ng-click="updateDoll(option, edit, inventoryOption[0], item.name)" ng-class="{'active': paperdoll[optionsTree[option].options[edit].select[0]].name === item.name}">
+                  <svg dnr-characteritem="{{$index}}" viewBox="0 0 744 1052" id="invEdit"></svg>
+                  <h6 class="text-center">{{item.name}}</h6>
+                </div>
+              </div>
+            </li>
+          </ul>
+          <div style="padding: 0 20px 20px 20px" class="clear">
+            <div class="button button-ok" ng-click="saveChar()">Save</div>
+            <div class="button button-cancel" ng-click="editChar()">Cancel</div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="wrapper">
+
+      <div class="content">
+        <div class="mast-head">
+          <div class="mast-core">
+            <div class="mast-pfeed">
+              <a href="/" ng-click="$root.editing = false">
+                <div class="mast-logo">
+                  <img src="images/pfeed_logo.svg"></img>
+                </div>
+                <div class="mast-info">
+                  <div class="site-title">REDTHREAD.IO</div>
+                  <div class="site-description">Tell your story</div>
+                </div>
+              </a>
+            </div>
+            <div class="feed-title">
+              <h1></h1>
+            </div>
+            <div class="mast-admin" module-admin ng-show="$root.state === 'story'"></div>
+          </div>
+        </div>
+        <div id="view" ui-view=""></div>
+      </div>
+
+      <div module-helper class="helper">
+        <div class="helper-message" ng-repeat="message in messages">
+          <h2>{{message.message}}</h2>
+        </div>
+      </div>
+      
+
+    </div>
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+     <script>
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+       ga('create', 'UA-54941776-1');
+       ga('send', 'pageview');
+    </script>
+
+    <!-- build:js(.) scripts/oldieshim.js -->
+    <!--[if lt IE 9]>
+    <script src="bower_components/es5-shim/es5-shim.js"></script>
+    <script src="bower_components/json3/lib/json3.min.js"></script>
+    <![endif]-->
+    <!-- endbuild -->
+
+    <!-- build:js(.) scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/angular-touch/angular-touch.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="bower_components/json3/lib/json3.js"></script>
+    <script src="bower_components/Snap.svg/dist/snap.svg-min.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+
+        <!-- build:js({.tmp,app}) scripts/scripts.js -->
+        <script src="scripts/app.js"></script>
+        
+        <script src="scripts/controllers/start.js"></script>
+        
+        <script src="scripts/services/resources.js"></script>
+        <script src="scripts/services/auth.js"></script>
+        <script src="scripts/services/helper.js"></script>
+        
+        <script src="scripts/filters/slug.js"></script>
+        <script src="scripts/filters/toarray.js"></script>
+        
+        <script src="scripts/directives/storyteller.js"></script>
+        <script src="scripts/directives/admin.js"></script>
+        <script src="scripts/directives/helper.js"></script>
+        <script src="scripts/directives/loggedin.js"></script>
+        <script src="scripts/directives/dialogueeditor.js"></script>
+        <script src="scripts/directives/threadconnector.js"></script>
+        <script src="scripts/directives/pan.js"></script>
+        <script src="scripts/directives/move.js"></script>
+        <script src="scripts/directives/dnravatar.js"></script>
+        <script src="scripts/directives/dnrpaperdoll.js"></script>
+        <script src="scripts/directives/dnrcharacteritem.js"></script>
+        <!-- endbuild -->
+
+</body>
+</html>

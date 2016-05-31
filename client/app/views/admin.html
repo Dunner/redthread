@@ -1,0 +1,20 @@
+
+<div class="admin-icon cursor" ng-click="module = true" ng-show="!authenticated">
+  <img src="images/pfeed_key.svg" style="height: 100%"></img>
+</div>
+<div class="admin-icon cursor" ng-click="edit()" ng-show="authenticated">
+  <img src="images/pfeed_cog.svg" style="height: 100%"></img>
+</div>
+<div class="admin-icon cursor" ng-click="logout()" ng-show="authenticated">
+  <img src="images/pfeed_lock.svg" style="height: 100%"></img>
+</div>
+
+<div class="module-background" ng-show="module" ng-click="module = false"></div>
+<div class="login module ng-hide" ng-show="module">
+  <form name="form" ng-submit="signin(form)" novalidate>
+    <div class="clear">
+      <input type="password" name="password" ng-model="password" placeholder="Password">
+      <button type="submit" class="button button-ok">Sign in</button>
+    </div>
+  </form>
+</div>

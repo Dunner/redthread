@@ -1,0 +1,42 @@
+
+
+<div id="story" storyteller>
+
+    <div class="messages-wrapper">
+
+      <div id="messages">
+
+        <h3 ng-show="threadflow.length < 1"> There are no threads in this story</h3>
+
+        <div class="message" 
+             ng-repeat="thread in threadflow track by $index"
+             ng-class="{'last':$index == threadflow.length-1}"
+             >
+            <span class="question" ng-click="($index !== threadflow.length-1) ? jumpUpTree(thread.increment, $index) : angular.noop() ">
+                {{thread.text}}
+            </span>
+            <div class="choices" ng-show="thread.choices.length">
+                <div class="choice" ng-repeat="choice in thread.choices" ng-click="displayThread(choice.toThread)">
+                    {{choice.text}}
+                </div>
+            </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div id="background-box">
+        <div id="character-box">
+          <svg width="100%" height="100%" dnr-avatar load="{{currentThread.character}}" viewBox="70 30 650 750" ng-show="currentThread.character"></svg>
+        </div>
+    </div>
+
+    <div id="speed-drag">
+        <div id="speed-drag-indicator"></div>
+    </div>
+
+
+
+    
+  </div>
