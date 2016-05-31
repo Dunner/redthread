@@ -1,4 +1,5 @@
 // config/db.js
   module.exports = {
-    url : 'mongodb://localhost/storytime'
+    url : 'mongodb://localhost/redthread'
+    //'mongodb://'+ process.env.IP +'/test'
   }

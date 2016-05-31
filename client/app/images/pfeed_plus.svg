@@ -53,5 +53,6 @@
   <path
      d="M 384,256 V 0 H 256 V 256 H 0 V 384 H 256 V 640 H 384 V 384 H 640 V 256 H 384 z"
      id="path4"
+     fill="#3B7808"
      inkscape:connector-curvature="0" />
 </svg>

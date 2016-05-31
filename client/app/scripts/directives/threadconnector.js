@@ -7,7 +7,7 @@
  * # threadConnector
  */
 angular.module('redthread')
-.directive('threadConnector', function(Stories, $stateParams, Threads) {
+.directive('threadConnector', function(Stories, $stateParams) {
 
   function link(scope, element, attrs) {
 
@@ -43,17 +43,20 @@ angular.module('redthread')
             y1 = 0,
             y2 = 0;
 
-        x2 = fromThread.pos.x - toThread.pos.x + relPos.x0;
-        y2 = fromThread.pos.y - toThread.pos.y + relPos.y0;
-
-        var length = Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2)),
-            angle  = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI + 180,
-            transform = 'rotate('+ angle +'deg)';
         
-        angular.element(element).css({
-          'transform': transform,
-          'width': length+'px',
-        });
+        if (toThread !== undefined) {
+          x2 = fromThread.pos.x - toThread.pos.x + relPos.x0;
+          y2 = fromThread.pos.y - toThread.pos.y + relPos.y0;
+
+          var length = Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2)),
+              angle  = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI + 180,
+              transform = 'rotate('+ angle +'deg)';
+          
+          angular.element(element).css({
+            'transform': transform,
+            'width': length+'px',
+          });
+        }
 
       }
     }

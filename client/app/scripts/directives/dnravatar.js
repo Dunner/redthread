@@ -57,7 +57,7 @@ angular.module('redthread')
       }
 
       function paintCharacter(array) {
-        Snap.load('data/character/combined.svg', function (image) {
+        Snap.load('images/characters.svg', function (image) {
           canvas.paper.clear();
 
           function paintE(section) {
@@ -98,10 +98,10 @@ angular.module('redthread')
       });
 
       function init() {
-        canvas.paper.clear();
         setTimeout(function(){
+          canvas.paper.clear();
           getCharacterLoad(attrs.load);
-        },100);
+        },500);
       }
 
     }

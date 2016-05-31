@@ -23,7 +23,7 @@ angular.module('redthread')
 
           $scope.module = false;
           
-          $scope.edit = function() {
+          $scope.editStory = function() {
             $rootScope.editing =! $rootScope.editing;
             $rootScope.$broadcast('editing', $rootScope.editing);
           };

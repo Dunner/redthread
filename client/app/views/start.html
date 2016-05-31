@@ -1,26 +1,38 @@
 
 
-<h1>Stories</h1>
+<div class="static-content">
 
-<div class="thread-new">
-  <hr/>
-  <div class="thread-toggle" ng-click="writeNew = !writeNew" ng-show="!writeNew">
-    <img src="images/pfeed_plus.svg" height="40px"></img>
-    <div class="text-new">CREATE NEW STORY</div>
-  </div>
-  <form class="thread-form" ng-submit="addStory()" ng-show="writeNew">
-    <input name="title" type="text" placeholder="Name" ng-model="form.name" autofocus="" />
-    <input name="password" type="password" placeholder="Password" ng-model="form.password" autofocus="" />
-    <button type="submit" class="button button-ok">Create</button>
-    <div class="button button-cancel" ng-click="writeNew = false">Cancel</div>
-    <div style="clear:both"></div>
-  </form>
-  <hr/>
-</div>
+  <div class="stories-wrapper">
 
-<div ng-repeat="story in stories | orderBy:'createdAt':true" ui-sref="story({'slug': story.slug})">
-  <div class="thread">
-    <h2>{{story.name}}</h2> <!-- {{item.completed}} {{item.createdAt | date:"MM/dd/yyyy 'at' h:mma"}}-->
+    <h1>Stories</h1>
+
+    <div class="story-new">
+      <div class="story-toggle" ng-click="writeNew = !writeNew" ng-show="!writeNew">
+        <img src="images/pfeed_plus.svg" height="40px"></img>
+        <div class="text-new">CREATE NEW STORY</div>
+      </div>
+
+      <form class="story-form" ng-submit="addStory()" ng-show="writeNew">
+        <small style="color:#888; line-height: 32px">The name of your story</small>
+        <input name="title" type="text" placeholder="Name" ng-model="form.name" autofocus="" />
+        <br>
+        <br>
+        <small style="color:#888; line-height: 32px">The password for your story (used for editing)</small>
+        <input name="password" type="password" placeholder="Password" ng-model="form.password" autofocus="" />
+        <button type="submit" class="button button-ok">Create</button>
+        <div class="button button-cancel" ng-click="writeNew = false">Cancel</div>
+        <div style="clear:both"></div>
+      </form>
+    </div>
+
+
+    <div class="stories">
+      <div ng-repeat="story in stories | orderBy:'createdAt':true" ui-sref="story({'slug': story.slug})" class="story cursor">
+          <h2>{{story.name}}</h2> <!-- {{item.completed}} {{item.createdAt | date:"MM/dd/yyyy 'at' h:mma"}}-->
+          <small>read</small>
+      </div>
+    </div>
+
   </div>
-  <hr/>
+
 </div>

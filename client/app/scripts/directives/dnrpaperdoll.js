@@ -31,7 +31,7 @@ angular.module('redthread')
 
       scope.changeEditUpdate = function () {
         scope.inventoryOption = scope.optionsTree[scope.option].options[scope.edit].select;
-        Snap.load('data/character/combined.svg', function (image) {
+        Snap.load('images/characters.svg', function (image) {
           scope.inventory = image.selectAll('g[inkscape\\:label="#'+scope.inventoryOption[0]+'"]').items;
           for (var i = scope.inventory.length - 1; i >= 0; i--) {
             var name = scope.inventory[i].node.id.split('_');
@@ -204,7 +204,7 @@ angular.module('redthread')
 
 
       function paintCharacter(array) {
-        Snap.load('data/character/combined.svg', function (image) {
+        Snap.load('images/characters.svg', function (image) {
           canvas.paper.clear();
 
           function paintE(section) {
@@ -238,7 +238,7 @@ angular.module('redthread')
       }
 
       scope.randomize = function() {
-        Snap.load('data/character/combined.svg', function (image) {
+        Snap.load('images/characters.svg', function (image) {
 
           angular.forEach(scope.paperdoll, function(item, slot) {
             var posibilities = image.selectAll('g[inkscape\\:label="#'+slot+'"]').items;

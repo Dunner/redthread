@@ -71,12 +71,30 @@ hr
 .wrapper 
   transition all .3s ease-in-out
   position absolute
+  z-index 97
   top 100px
   left 0
   margin auto
   width 100%
   height calc( 100% - 200px )
   
+.js .if-nojs 
+  display none !important
+  height 0
+  width 0
+  overflow none
+.no-js .if-nojs
+  padding 15px
+  h4
+    padding 30px 15px
+    background white
+    border 2px solid red
+    & strong
+      color rgb(244, 78, 78)
+      &:hover
+        text-decoration underline
+      
+
 
 .editing 
   .wrapper
@@ -101,19 +119,6 @@ hr
   border-bottom 0px solid transparent
   overflow hidden
   
-@media (max-width:500px){
-  .wrapper {
-    height: 100% !important;
-    width: 100% !important;
-  }
-  .content{
-    max-height: 100% !important;
-    max-width: 100% !important;
-    width 100%!important
-  }
-}
-
-
 #view
   width 100%
   height calc( 100% - 70px )
@@ -176,3 +181,12 @@ hr
     position absolute
     right 0px
     top 0px
+
+
+
+.static-content
+  width 100%
+  height 100%
+  overflow-y auto
+  overflow-x none
+  color white

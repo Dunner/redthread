@@ -104,6 +104,10 @@ angular.module('redthread')
       $rootScope.$broadcast('redraw');
     };
 
+    scope.choiceOutChange = function() {
+      $rootScope.$broadcast('redraw');
+    }
+
 
     scope.removeThread = function(id) {
       if (scope.thread.increment !== 0) {

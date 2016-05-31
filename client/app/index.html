@@ -19,6 +19,9 @@
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,800,700,600,300' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
     <!-- endbuild -->
+    <script>
+      document.documentElement.className = document.documentElement.className.replace("no-js","js");
+    </script>
   </head>
   <body ng-app="redthread">
     <!--[if lt IE 7]>
@@ -76,8 +79,8 @@
         </div>
       </div>
 
-      <div class="module-background" ng-show="threadEdit" ng-click="editThread()"></div>
-      <div id="form-module" class="module" ng-show="threadEdit">
+      <div class="module-background ng-hide" ng-show="threadEdit" ng-click="editThread()"></div>
+      <div id="form-module" class="module ng-hide" ng-show="threadEdit">
 
         <form class="thread-form" ng-submit="updateThread(); editThread()">
 
@@ -118,13 +121,15 @@
                   </select>
                 </div>
                 <div class="remove-choice" ng-click="removeChoice($index)"></div>
+                <div class="button button-cancel remove-choice" ng-click="removeChoice($index)">X</div>
               </div>
               <div class="choice clear" ng-show="thread.choices.length < 1">
                 <div class="alternative">Go To:</div>
                 <div class="go-to">goto:
                   <select name="mySelect2"
                     ng-options="threado.increment as threado.increment for threado in threads"
-                    ng-model="thread.toThread">
+                    ng-model="thread.toThread"
+                    ng-change="choiceOutChange()">
                   </select>
                 </div>
               </div>
@@ -141,8 +146,8 @@
       </div>
 
 
-      <div class="module-background" ng-show="charEdit" ng-click="editChar()"></div>
-      <div id="form-module" class="module" ng-show="charEdit">
+      <div class="module-background ng-hide" ng-show="charEdit" ng-click="editChar()"></div>
+      <div id="form-module" class="module ng-hide" ng-show="charEdit">
 
         
 
@@ -227,7 +232,17 @@
             <div class="mast-admin" module-admin ng-show="$root.state === 'story'"></div>
           </div>
         </div>
-        <div id="view" ui-view=""></div>
+        <div id="view" ui-view="">
+          <div class="if-nojs">
+            <h4>
+              You need to have javascript enabled to use this application 
+              <a href="http://enable-javascript.com/">
+                <strong>READ MORE</strong>
+              </a>
+            </h4>
+          </div>
+        </div>
+
       </div>
 
       <div module-helper class="helper">
