@@ -63,8 +63,13 @@ angular
       .state('story', {
         url: '/story/{slug}',
         templateUrl: 'views/story.html'
-      });
+      })
       
+      .state('about', {
+        url: '/about',
+        templateUrl: 'views/about.html'
+      });
+
     $urlRouterProvider.otherwise('/');
     $locationProvider.html5Mode(true);
     $locationProvider.hashPrefix('!');
