@@ -9,25 +9,43 @@
 angular.module('redthread')
 .directive('move', function() {
 
+  //Direktiv som tillåter förflyttelse av "trådar"(threads)" i dialogkartan
+  //Igenom att dra, peka och släppa med muspekare
+
   function link(scope, element) {
     var me = element[0],
-        vp = angular.element(document.body.querySelector('#viewport')),
         self = {};
 
     if(window.addEventListener) {
-       me.addEventListener('mousedown',startDrag,false);
-       document.body.addEventListener('mousemove',drag,false);
-       document.body.addEventListener('mouseup',stopDrag,false);
+
+      //binder mushändelser till funktioner,
+      //drag och släpp körs på dokumentet och inte "me"
+      //för att vi vill ha funktionaliteten även när andra element är under musen
+
+      me.addEventListener('mousedown',startDrag,false);
+      document.body.addEventListener('mousemove',drag,false);
+      document.body.addEventListener('mouseup',stopDrag,false);
     }
     else if(window.attachEvent) {
-       me.attachEvent('onmousedown',startDrag);
-       document.body.attachEvent('onmousemove',drag);
-       document.body.attachEvent('onmouseup',stopDrag);
+
+      //binder mushändelser till funktioner,
+      //drag och släpp körs på dokumentet och inte "me"
+      //för att vi vill ha funktionaliteten även när andra element är under musen
+
+      me.attachEvent('onmousedown',startDrag);
+      document.body.attachEvent('onmousemove',drag);
+      document.body.attachEvent('onmouseup',stopDrag);
     }
 
     function startDrag(e) {
       if (e.which === 1) {
+
+        //Ser till att det bara gäller vänsterklick
+
         if(Object.keys(self).length === 0 && self.constructor === Object) {
+
+          //Körs när vi håller ner musknappen var self är ett objekt
+
           e=e||event;
 
           self.panStartX = e.pageX;
@@ -40,16 +58,20 @@ angular.module('redthread')
 
     function drag(e) {
       if(Object.keys(self).length > 0 && self.constructor === Object) {
+
+        //Körs när vi flyttar musen över dokumentet och self objektet har nycklar
+        //har self objektet nycklar så trycker vi ner musen, alltså blir detta en dragfunktion
+
         e=e||event;
         var pageTop = self.pageTop;
         var pageLeft = self.pageLeft;
         self.panEndX = e.pageX;
         self.panEndY = e.pageY;
         
-        //vertical
+        //lodrätt
         if (self.panStartY > self.panEndY) {
 
-          //up
+          //upp
           self.panTop = self.panStartY - self.panEndY;
           
           pageTop-= self.panTop;
@@ -57,7 +79,7 @@ angular.module('redthread')
           
           angular.element(me).css({ top: pageTop+'px', left: pageLeft+'px' });
         } else {
-          // Down
+          // ned
           self.panTop = self.panEndY - self.panStartY;
           
           pageTop+= self.panTop;
@@ -65,9 +87,9 @@ angular.module('redthread')
           angular.element(me).css({ top: pageTop+'px', left: pageLeft+'px' });
         }
       
-        //horizontal
+        //sidled
         if (self.panStartX > self.panEndX) {
-          //left
+          //vänster
           self.panLeft = self.panEndX - self.panStartX;
           
           pageLeft+= self.panLeft;
@@ -75,7 +97,7 @@ angular.module('redthread')
           angular.element(me).css({ left: pageLeft+'px', top: pageTop+'px' });
         } else {
           
-          // right
+          // höger
           self.panLeft = self.panStartX - self.panEndX;
 
           pageLeft-= self.panLeft;
@@ -90,6 +112,13 @@ angular.module('redthread')
     
     function stopDrag(e) {
       if(Object.keys(self).length > 0 && self.constructor === Object) {
+
+        //Körs när musen slutar vara intryckt på dokumentet
+        //Tömmer self på nycklar
+        //Flyttar på elementet
+        //Berättar för dialougeeditor att elementet potentielltt har rört på sig
+        //Berättar vilket element och vart det befinner sig
+
         e=e||event;
         self={};
 
@@ -113,67 +142,3 @@ angular.module('redthread')
 
 });
 
-
-
-
-
-
-
-
-
-
-
-
-// V2, smaller but not quite working
-/*    
-  function startDrag(e) {
-    if(Object.keys(self).length === 0 && self.constructor === Object) {
-      e=e||event;
-      self.panMouseStart = {
-        'horizontal': e.pageX,
-        'vertical': e.pageY
-      };
-      self.panElStart = {
-        'horizontal': parseInt(angular.element(vp).css('top'), false) || 0,
-        'vertical': parseInt(angular.element(vp).css('left'), false) || 0
-      };
-      self.panEnd = {};
-    }
-  }
-  function drag(e) {
-    if(Object.keys(self).length > 0 && self.constructor === Object) {
-      e=e||event;
-      var panMouseCurrent = {
-            'horizontal':self.panElStart['horizontal'],
-            'vertical':self.panElStart['vertical']},
-          panMouseEnd = {
-            'horizontal':e.pageX,
-            'vertical':e.pageY
-      };
-      for (var direction in self.panMouseStart) {
-        pan(direction, self.panMouseStart[direction] > panMouseEnd[direction])
-      }
-    
-      function pan(direction, mood) {
-        if (mood) {
-          var increment = panMouseEnd[direction] - self.panMouseStart[direction];
-          panMouseCurrent[direction]+= increment;
-        } else {
-          var increment = self.panMouseStart[direction]; - panMouseEnd[direction];
-          panMouseCurrent[direction]-= increment;
-          //if (panMouseCurrent[direction] > 42) panMouseCurrent[direction] = 42;
-        }
-        
-        angular.element(vp).css({ top: panMouseCurrent['vertical']+'px',left: panMouseCurrent['horizontal']+'px' });
-
-      }
-
-    }
-  }
-  function stopDrag(e) {
-    if(Object.keys(self).length > 0 && self.constructor === Object) {
-      e=e||event;
-      self={};
-    }
-  }
-*/

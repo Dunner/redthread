@@ -9,6 +9,9 @@
  */
 angular.module('redthread')
   .directive('dnrPaperdoll', function ($rootScope, Characters) {
+
+    //Direktiv som tillåter skapande/förändrande av svgkaraktär/avatar
+
     return function (scope, element, attrs) {
       attrs.disable = '';
 
@@ -19,10 +22,17 @@ angular.module('redthread')
       scope.palette = 'skintones';
 
       scope.changeOption = function(option) {
+
+        //Körs när karaktärsdrags huvudnavigering klickas
+        //bestämmer vilka underkategorier som bör visas
+
         scope.option = option;
         scope.changeEdit(scope.optionsTree[option].defaultOption);
       };
       scope.changeEdit = function(option) {
+
+        //Körs när karaktärsdrags underkategorier klickas
+
         scope.edit = option;
         scope.palette = scope.optionsTree[scope.option].options[scope.edit].palette;
         scope.select(scope.optionsTree[scope.option].options[scope.edit].select);
@@ -30,6 +40,10 @@ angular.module('redthread')
       };
 
       scope.changeEditUpdate = function () {
+
+        //bestämmer vilka karaktärsdrag/delar/utsyrslar som bör visasa
+        //Utgår ifrån val a karaktärsdrags huvud och subnavigering för att bestämma vad
+
         scope.inventoryOption = scope.optionsTree[scope.option].options[scope.edit].select;
         Snap.load('images/characters.svg', function (image) {
           scope.inventory = image.selectAll('g[inkscape\\:label="#'+scope.inventoryOption[0]+'"]').items;
@@ -42,6 +56,9 @@ angular.module('redthread')
       };
 
       scope.$watch(
+
+        //Hanterar färgpalettsval, ur bruk för tillfället TODO
+
         function( scope ) {
           return( scope.specificColor );
         }, function( color ) {
@@ -52,6 +69,12 @@ angular.module('redthread')
       );
 
       scope.changeCharacter = function(id) {
+
+        //Funktion som körs när karaktärsediteringsmodulen öppnas
+        //Ser till att vi ser den karaktär vi vill ändra på
+        //Byter ut karaktären utifrån passerat karaktärsid
+        //Kör buildCharacter
+
         $rootScope.$broadcast('redraw');
         for (var i = scope.characters.length - 1; i >= 0; i--) {
           var character = scope.characters[i]
@@ -62,10 +85,16 @@ angular.module('redthread')
             $rootScope.$broadcast('redraw');
           }
         }
+
+
       };
 
 
       scope.saveChar = function() {
+
+        //Körs vid sparning av karaktär
+        //Går över paperdoll och gör om til textsträng för sparning i db
+
         var protLoad = [];
         angular.forEach(scope.paperdoll, function(part) {
           if (part.name !== undefined &&
@@ -81,6 +110,8 @@ angular.module('redthread')
         });
       };
 
+
+      //Colors bestämmer vilka färger vi har visa i paletten
       scope.colors = {
         'skintones': [
           'rgb(240, 199, 177)',
@@ -105,6 +136,8 @@ angular.module('redthread')
           'rgb(16, 122, 168)']
       };
 
+      //Optionstree utgör vilka menyalternativ vi har
+      //Och vilka färgalternativ som passar bäst till vilka menyval
       scope.optionsTree = {
         'face':{
           'index': 1,
@@ -181,7 +214,12 @@ angular.module('redthread')
         // 'jewelry':{'index': 5},
         // 'scars':{'index': 6},
       };
+
       function Slot(type) {
+
+        //Gemensam struktur för kroppsdel/utstyrsels information
+        //Används flitigt av paperdoll för att bygga upp de delar vår avatar kan bestå av
+
         this.type = type;
         this.name = '';
         this.color = '';
@@ -204,6 +242,10 @@ angular.module('redthread')
 
 
       function paintCharacter(array) {
+
+        //Funktion som laddar in svgfilen med alla möjliga karaktärsdrag
+        //Printar serdan ut svgbild av alla drag som passerats in i array(paperdoll format)
+
         Snap.load('images/characters.svg', function (image) {
           canvas.paper.clear();
 
@@ -223,6 +265,8 @@ angular.module('redthread')
             }
           }
 
+          //Inte loopat för kontroll av vad som målas
+
           paintE(array.ears);
           paintE(array.face);
           paintE(array.iris);
@@ -238,6 +282,9 @@ angular.module('redthread')
       }
 
       scope.randomize = function() {
+
+        //Randomfunktion som snabbt skapar en slumpmössig karaktär utifrån de karaktärsdrag som finns tillgängliga
+
         Snap.load('images/characters.svg', function (image) {
 
           angular.forEach(scope.paperdoll, function(item, slot) {
@@ -256,6 +303,11 @@ angular.module('redthread')
       //var load = 'face_slob:#d6ad94 ears_default:#d6ad94 eyes_default:#d6ad94 iris_default:#c4caff nose_default:# mouth_default:# mustache_slob:#212121 eyebrows_default:#292929 glasses_monocleL:#38ffef';
       // scope.randomize();
       function buildCharacter(load) {
+
+        //Bygger upp paperdollstruktur av textsträng
+        //Passerar skapad paperdoll till paintCharacter
+        //Är textsträngen invalid körs randomize
+
         if (load.length < 5) {
           scope.randomize();
         } else {
@@ -273,6 +325,9 @@ angular.module('redthread')
       }
 
       scope.select = function (array) {
+
+        //Används för att bestämma vad som är aktivt/väljt, främst för att kunna ändra färgalternativ på enskidla delar(t.ex. läppar)
+
         scope.toEdit = [];
         for (var i = array.length - 1; i >= 0; i--) {
           if (scope.paperdoll[array[i]].name === undefined) {continue;}
@@ -282,6 +337,7 @@ angular.module('redthread')
       scope.select(['face', 'ears', 'nose']);
 
       scope.changeColor = function (array, color, types) {
+        //ur bruk atm TODO
         // angular.forEach(types, function(type) {
         //   scope.paperdoll[type].color = color;
         // });
@@ -292,29 +348,6 @@ angular.module('redthread')
         // });
       };
 
-      scope.updateDoll = function (option, edit, type, name) {
-        if (scope.paperdoll[type].name !== undefined) {
-          // var test = canvas.select('#' + type + '_' + scope.paperdoll[type].name);
-          // test.stop().animate({'opacity': '0'}, 300);
-          // setTimeout(function(){
-          //   test.remove();
-          //   scope.paperdoll[type].name = name;
-          //   scope.select(scope.optionsTree[option].options[edit].select);
-          //   paintCharacter(scope.paperdoll);
-          //   scope.$apply();
-          // },300);
-          scope.paperdoll[type].name = name;
-          scope.select(scope.optionsTree[option].options[edit].select);
-          paintCharacter(scope.paperdoll);
-        } else {
-          scope.paperdoll[type].name = name;
-          scope.paperdoll[type].type = type;
-          scope.paperdoll[type].color = '#';
-          scope.select(scope.optionsTree[option].options[edit].select);
-          paintCharacter(scope.paperdoll);
-        }
-
-      };
 
     };
   });

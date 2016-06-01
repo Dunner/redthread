@@ -15,13 +15,17 @@ angular.module('redthread')
     var i = 0,
         timeouts = [],
         scrollBoxElement = angular.element(element[0].querySelector('#messages')),
-        speedDragElement = angular.element(element[0].querySelector('#speed-drag')),
-        speedDragIndicatorElement = angular.element(element[0].querySelector('#speed-drag-indicator')),
-        speedDragDragging = false,
+        // speedDragElement = angular.element(element[0].querySelector('#speed-drag')),
+        // speedDragIndicatorElement = angular.element(element[0].querySelector('#speed-drag-indicator')),
+        // speedDragDragging = false,
         readingSpeed = 40;
 
     scope.$on('editing', function (event, editing) {
-      console.log(editing)
+
+      //Väntar  på ett rop på 'editing' längre upp i scope/dom trädet
+      //Detta sker när vi går in och ut ur dialogkartan för att ge oss
+      //en uppdaterbar version av historian efter förändring
+
       if (!editing) {
         startStory();
       } else {
@@ -34,6 +38,11 @@ angular.module('redthread')
     }); 
 
     function startStory() {
+
+      //Init
+      //Körs när vi vill börja om eller visa en ny historia
+      //Hämtar historian(story) från sidans URL parameter
+      //Hämtar därefter den historians trådar och karaktärer
 
       scope.threadflow = [];
       scope.threads = [];
@@ -58,6 +67,8 @@ angular.module('redthread')
     startStory();
 
     function findThreadByIncrement(increment) {
+
+      //Finner trådobjekt utifrån passerat increment.
       increment = Number(increment);
       for (var i = scope.threads.length - 1; i >= 0; i--) {
         if(scope.threads[i].increment === increment) {
@@ -67,6 +78,12 @@ angular.module('redthread')
     }
 
     scope.displayThread = function(increment) {
+
+      //Körs när vi vill visa ett nytt meddelande
+      //Visar det meddelande vars increment stämmer med det som passerats in
+      //Hanterar även hur länge vi väntar mellan meddelanden
+      //Och rullning nedåt för att man ska kunna se meddelandet
+
       clearTimeouts();
       increment = Number(increment);
       var thread = findThreadByIncrement(increment);
@@ -77,6 +94,7 @@ angular.module('redthread')
           scope.$apply();
           scrollToBottom(scrollBoxElement[0],1000);
         },200);
+
         scope.threadflow.push(thread);
         scope.currentThread = thread;
         $rootScope.$broadcast('nextthread');
@@ -138,51 +156,51 @@ angular.module('redthread')
       
     }
 
-
-    //Nedan handlar om uppläsningshastighetsreglaget, dålig UX atm. TODO
-
-    function adjustReadSpeed(e) {
-      if (speedDragDragging) {
-        //Körs när man drar i hastighetsreglaget längst ner på sidan
-        var indicatorX = Math.floor(e.pageX - posFromLeft(speedDragElement));
-        var draggerWidth = speedDragElement.offsetWidth;
-        readingSpeed = ((indicatorX / draggerWidth) * 100).toFixed(2);
-        console.log(indicatorX,draggerWidth,readingSpeed);
-        speedDragIndicatorElement.style.left = indicatorX.toFixed(2) + 'px';
-      }
-      function posFromLeft(obj) {
-        //Linear upp muspositionen med reglagets sidoffset så vi kan räkna ut var på elementet vi drar någonstans.
-        var offLeft = 0;
-        if (obj.offsetParent) {
-          do {
-            offLeft += obj.offsetLeft;
-          } while (obj == obj.offsetParent);
-          return offLeft;
-        }
-      }
-    }
-
-    //Muspekar event
-    speedDragElement.onmousemove=function(e){
-      adjustReadSpeed(e);
-    };
-    speedDragElement.onmousedown=function(e){
-      speedDragDragging = true;
-      adjustReadSpeed(e);
-    };
-    document.onmouseup=function(){
-      speedDragDragging = false;
-    };
-
-
     function clearTimeouts() {
-      //Clearar alla timeouts som lagts till i timeout listan.
+      //Tar kål på alla timeouts som lagts till i timeout listan.
       for (var i=0; i<timeouts.length; i++) {
         clearTimeout(timeouts[i]);
       }
       //Töm timeout listan.
       timeouts = [];
     }
+
+    //Nedan handlar om uppläsningshastighetsreglaget, dålig UX atm. TODO
+
+    // function adjustReadSpeed(e) {
+    //   if (speedDragDragging) {
+    //     //Körs när man drar i hastighetsreglaget längst ner på sidan
+    //     var indicatorX = Math.floor(e.pageX - posFromLeft(speedDragElement));
+    //     var draggerWidth = speedDragElement.offsetWidth;
+    //     readingSpeed = ((indicatorX / draggerWidth) * 100).toFixed(2);
+    //     console.log(indicatorX,draggerWidth,readingSpeed);
+    //     speedDragIndicatorElement.style.left = indicatorX.toFixed(2) + 'px';
+    //   }
+    //   function posFromLeft(obj) {
+    //     //Linear upp muspositionen med reglagets sidoffset så vi kan räkna ut var på elementet vi drar någonstans.
+    //     var offLeft = 0;
+    //     if (obj.offsetParent) {
+    //       do {
+    //         offLeft += obj.offsetLeft;
+    //       } while (obj == obj.offsetParent);
+    //       return offLeft;
+    //     }
+    //   }
+    // }
+
+    // //Muspekar event
+    // speedDragElement.onmousemove=function(e){
+    //   adjustReadSpeed(e);
+    // };
+    // speedDragElement.onmousedown=function(e){
+    //   speedDragDragging = true;
+    //   adjustReadSpeed(e);
+    // };
+    // document.onmouseup=function(){
+    //   speedDragDragging = false;
+    // };
+
+
 
 
   }

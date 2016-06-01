@@ -9,6 +9,12 @@
  */
 angular.module('redthread')
   .directive('dnrCharacteritem', function () {
+
+    //Direktiv som målar upp enskilda karaktärsdrag från svgfil
+    //Utgår från elementets attribut "dnrCharacteritem"
+    //T.ex. en hatt eller ett öra
+    //Barn och asvtickare till dnrpaperdoll
+
     return function (scope, element, attrs) {
       var canvas = new Snap(element[0]);
       var el = scope.inventory[attrs.dnrCharacteritem];

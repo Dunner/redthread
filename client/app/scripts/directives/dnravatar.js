@@ -9,10 +9,18 @@
  */
 angular.module('redthread')
   .directive('dnrAvatar', function ($rootScope) {
+
+    //Direktiv som tillåter en karaktär att målas upp i vilket svgelement som helst
+    //Kräver attribut med karaktärsid
+
     function link(scope, element, attrs) {
       var canvas = new Snap(element[0]);
 
       function Slot(type) {
+
+        //Gemensam struktur för kroppsdel/utstyrsels information
+        //Används flitigt av paperdoll för att bygga upp de delar vår avatar kan bestå av
+
         this.type = type;
         this.name = '';
         this.color = '';
@@ -32,6 +40,10 @@ angular.module('redthread')
       };
 
       function getCharacterLoad(id) {
+
+        //Hämtar en karaktärs sparade strängvariant av paperdoll utifrån givet karaktärsid
+        //passerar detta till buildCharacter
+
         for (var i = $rootScope.characters.length - 1; i >= 0; i--) {
           var character = $rootScope.characters[i];
           if (character._id === id) {
@@ -41,6 +53,11 @@ angular.module('redthread')
       };
 
       function buildCharacter(load) {
+
+        //Bygger upp paperdollstruktur av textsträng
+        //Passerar skapad paperdoll till paintCharacter
+        //Är textsträngen invalid körs randomize
+
         if (load.length < 5) {
           scope.randomize();
         } else {
@@ -57,6 +74,10 @@ angular.module('redthread')
       }
 
       function paintCharacter(array) {
+
+        //Funktion som laddar in svgfilen med alla möjliga karaktärsdrag
+        //Printar serdan ut svgbild av alla drag som passerats in i array(paperdoll format)
+
         Snap.load('images/characters.svg', function (image) {
           canvas.paper.clear();
 
@@ -76,6 +97,8 @@ angular.module('redthread')
             }
           }
 
+          //Inte loopat för kontroll av vad som målas
+
           paintE(array.ears);
           paintE(array.face);
           paintE(array.iris);
@@ -90,19 +113,33 @@ angular.module('redthread')
         });
       }
 
-      scope.$on('redraw', function() {
-        init();
-      });
-      scope.$on('nextthread', function() {
-        init();
-      });
 
       function init() {
+
+        //plockar loadattribut från elementet direktivet sitter på
+        //förväntas vara ett karaktärsid, passar det till getCharacterLoad
+
         setTimeout(function(){
           canvas.paper.clear();
           getCharacterLoad(attrs.load);
         },500);
       }
+
+      scope.$on('redraw', function() {
+
+        //Ligger och väntar på att köras, 
+        //tillåter att vi målar om vår karaktär när denna förändras eller byts ut
+
+        init();
+      });
+      scope.$on('nextthread', function() {
+
+        //Ligger och väntar på att köras, 
+        //tillåter att vi målar om vår karaktär när denna förändras eller byts ut
+
+        init();
+      });
+
 
     }
     return {

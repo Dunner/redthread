@@ -9,25 +9,39 @@
 angular.module('redthread')
 .directive('pan', function() {
 
+  //Direktiv som sitter på dialogkartelementet
+  //Applicerar möjligheten att använda musen för att dra omkring och utforska
+
   function link(scope, element) {
     element[0].id = "viewport";
-    var vp = element[0],
+    var vp = element[0], //viewport element
         self = {};
 
-
     if(window.addEventListener) {
-       vp.addEventListener('mousedown',startDrag,false);
-       document.body.addEventListener('mousemove',drag,false);
-       document.body.addEventListener('mouseup',stopDrag,false);
+
+        //binder mushändelser till funktioner,
+        //drag och släpp körs på dokumentet och inte vp
+        //för att vi vill ha funktionaliteten även när andra element är under musen
+
+      vp.addEventListener('mousedown',startDrag,false);
+      document.body.addEventListener('mousemove',drag,false);
+      document.body.addEventListener('mouseup',stopDrag,false);
     }
     else if(window.attachEvent) {
-       vp.attachEvent('onmousedown',startDrag);
-       document.body.attachEvent('onmousemove',drag);
-       document.body.attachEvent('onmouseup',stopDrag);
+
+      //binder mushändelser till funktioner,
+      //drag och släpp körs på dokumentet och inte vp
+      //för att vi vill ha funktionaliteten även när andra element är under musen
+
+      vp.attachEvent('onmousedown',startDrag);
+      document.body.attachEvent('onmousemove',drag);
+      document.body.attachEvent('onmouseup',stopDrag);
     }
 
-
     setTimeout(function(){
+
+      //Centrerar kartan vid initiering
+
       (function centerViewport() {
         angular.element(vp).css({
           'top': -(vp.clientHeight - document.body.clientHeight)/2 + 'px',
@@ -41,26 +55,33 @@ angular.module('redthread')
 
     function startDrag(e) {
       if(Object.keys(self).length === 0 && self.constructor === Object && e.target.id == 'viewport') {
+
+        //Körs när vi håller ner musknappen över exakt viewport id elementet och var self är ett objekt
+
         e=e||event;
 
         self.panStartX = e.pageX;
         self.panStartY = e.pageY;
         self.pageTop = parseInt(angular.element(vp).css('top'), false) || 0;
         self.pageLeft = parseInt(angular.element(vp).css('left'), false) || 0;
-      };
+      }
     }
     function drag(e) {
       if(Object.keys(self).length > 0 && self.constructor === Object) {
+
+        //Körs när vi flyttar musen över dokumentet och self objektet har nycklar
+        //har self objektet nycklar så trycker vi ner musen, alltså blir detta en dragfunktion
+
         e=e||event;
         var pageTop = self.pageTop;
         var pageLeft = self.pageLeft;
         self.panEndX = e.pageX;
         self.panEndY = e.pageY;
         
-        //vertical
+        //lodrätt
         if (self.panStartY > self.panEndY) {
 
-          //up
+          //upp
           self.panTop = self.panEndY - self.panStartY;
           
           pageTop+= self.panTop;
@@ -68,7 +89,7 @@ angular.module('redthread')
           
           angular.element(vp).css({ top: pageTop+'px',left: pageLeft+'px' });
         } else {
-          // Down
+          // ned
           self.panTop = self.panStartY - self.panEndY;
           
           pageTop-= self.panTop;
@@ -77,9 +98,9 @@ angular.module('redthread')
           angular.element(vp).css({ top: pageTop+'px',left: pageLeft+'px' });
         }
       
-        //horizontal
+        //sidled
         if (self.panStartX > self.panEndX) {
-          //right
+          //höger
           self.panLeft = self.panEndX - self.panStartX;
           
           pageLeft+= self.panLeft;
@@ -87,7 +108,7 @@ angular.module('redthread')
           angular.element(vp).css({ left: pageLeft+'px',top: pageTop+'px' });
         } else {
           
-          // left
+          // vänster
           self.panLeft = self.panStartX - self.panEndX;
 
           pageLeft-= self.panLeft;
@@ -99,8 +120,14 @@ angular.module('redthread')
 
       }
     }
+
     function stopDrag(e) {
+
       if(Object.keys(self).length > 0 && self.constructor === Object) {
+
+        //Körs när musen slutar vara intryckt på dokumentet
+        //tömmer self på nycklar
+
         e=e||event;
         self={};
       }
@@ -118,16 +145,7 @@ angular.module('redthread')
 
 
 
-
-
-
-
-
-
-
-
-
-// V2, smaller but not quite working
+// V2, mindre men stämmer inte riktigt (behöver möjligtvis debounce)
 /*    
   function startDrag(e) {
     if(Object.keys(self).length === 0 && self.constructor === Object) {

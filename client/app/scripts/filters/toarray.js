@@ -10,6 +10,11 @@
  */
 angular.module('redthread')
   .filter('toArray', function () {
+
+    //Filter som konverterar objekt till listor, för itterering(ng-repeat) av angular
+    //Tillåter filtrering och sortering
+    //Lite som att loopa object keys
+
     return function (obj, addKey) {
       if ( addKey === false ) {
         return Object.keys(obj).map(function(key) {

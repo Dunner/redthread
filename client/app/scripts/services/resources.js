@@ -1,6 +1,12 @@
 'use strict';
 
 
+//Detta dokument innehåller alla APIresurser och "logiken" för informationsskick till servern.
+//https://docs.angularjs.org/api/ngResource/service/$resource
+// ---
+//Varje resurs kan alltså kallas med t.ex. save eller query för att skapa post eller get förfågningar till servern på resursens specifika url med paramter
+
+
 /**
  * @ngdoc service
  * @name redthread.Stories
