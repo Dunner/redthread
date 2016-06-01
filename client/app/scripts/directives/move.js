@@ -16,27 +16,6 @@ angular.module('redthread')
     var me = element[0],
         self = {};
 
-    if(window.addEventListener) {
-
-      //binder mushändelser till funktioner,
-      //drag och släpp körs på dokumentet och inte "me"
-      //för att vi vill ha funktionaliteten även när andra element är under musen
-
-      me.addEventListener('mousedown',startDrag,false);
-      document.body.addEventListener('mousemove',drag,false);
-      document.body.addEventListener('mouseup',stopDrag,false);
-    }
-    else if(window.attachEvent) {
-
-      //binder mushändelser till funktioner,
-      //drag och släpp körs på dokumentet och inte "me"
-      //för att vi vill ha funktionaliteten även när andra element är under musen
-
-      me.attachEvent('onmousedown',startDrag);
-      document.body.attachEvent('onmousemove',drag);
-      document.body.attachEvent('onmouseup',stopDrag);
-    }
-
     function startDrag(e) {
       if (e.which === 1) {
 
@@ -52,7 +31,7 @@ angular.module('redthread')
           self.panStartY = e.pageY;
           self.pageTop = parseInt(angular.element(me).css('top'), false) || 0;
           self.pageLeft = parseInt(angular.element(me).css('left'), false) || 0;
-        };
+        }
       }
     }
 
@@ -125,7 +104,7 @@ angular.module('redthread')
         var pos = {
           'x': parseInt(angular.element(me).css('left'), false) || 0,
           'y': parseInt(angular.element(me).css('top'), false) || 0
-        }
+        };
         
         var tboxIncrement = parseInt(angular.element(me)[0].attributes.increment.value, false) || 0;
         scope.updatePosition(tboxIncrement, pos);
@@ -133,6 +112,26 @@ angular.module('redthread')
     }
 
 
+    if(window.addEventListener) {
+
+      //binder mushändelser till funktioner,
+      //drag och släpp körs på dokumentet och inte "me"
+      //för att vi vill ha funktionaliteten även när andra element är under musen
+
+      me.addEventListener('mousedown',startDrag,false);
+      document.body.addEventListener('mousemove',drag,false);
+      document.body.addEventListener('mouseup',stopDrag,false);
+    }
+    else if(window.attachEvent) {
+
+      //binder mushändelser till funktioner,
+      //drag och släpp körs på dokumentet och inte "me"
+      //för att vi vill ha funktionaliteten även när andra element är under musen
+
+      me.attachEvent('onmousedown',startDrag);
+      document.body.attachEvent('onmousemove',drag);
+      document.body.attachEvent('onmouseup',stopDrag);
+    }
 
   }
 

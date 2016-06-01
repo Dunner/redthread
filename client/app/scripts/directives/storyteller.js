@@ -12,8 +12,7 @@ angular.module('redthread')
   function link(scope, element) {
 
     
-    var i = 0,
-        timeouts = [],
+    var timeouts = [],
         scrollBoxElement = angular.element(element[0].querySelector('#messages')),
         // speedDragElement = angular.element(element[0].querySelector('#speed-drag')),
         // speedDragIndicatorElement = angular.element(element[0].querySelector('#speed-drag-indicator')),
@@ -106,17 +105,16 @@ angular.module('redthread')
           //Sker automatiskt för ointeraktiva trådar för att visa nästa tråd.
           var time = (thread.text.length+30) * readingSpeed;
           timeouts.push(setTimeout(function(){
-            scope.displayThread(thread.toThread)
+            scope.displayThread(thread.toThread);
           },time));
         } 
       }
     
-    }
+    };
 
     scope.jumpUpTree = function(increment, index) {
-      console.log(scope.threadflow.length, index)
-      scope.threadflow.splice( index+1, 99)
-    }
+      scope.threadflow.splice( index+1, 99);
+    };
     
     var timeout;
     //Scrollskötning

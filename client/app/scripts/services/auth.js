@@ -42,7 +42,6 @@ angular.module('redthread')
         password: data.password,
         rememberMe: data.rememberMe
       }, function() {
-        console.log(cb)
         return cb();
       }, function(err) {
         return cb(err.data);

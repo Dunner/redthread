@@ -13,9 +13,7 @@ angular.module('redthread')
 
   function link(scope, element) {
 
-    var i = 0,
-        vp = angular.element(element[0].querySelector('#viewport')),
-        threadWrapper = angular.element(element[0].querySelector('#threadwrapper'));
+    var vp = angular.element(element[0].querySelector('#viewport'));
  
 
     scope.$on('editing', function(event, editing) {
@@ -41,7 +39,7 @@ angular.module('redthread')
           scope.threads = response;
           if (scope.threads.length === 0) {
             //No threads, create thread #0
-            scope.createThread(1800,1800)
+            scope.createThread(1800,1800);
           }
         });
         Characters.query({'storyId': scope.story._id}, function(response) {
@@ -65,7 +63,7 @@ angular.module('redthread')
       
     };
 
-    scope.editChar = function(increment) {
+    scope.editChar = function() {
 
       //Öppnar eller stänger karaktärsediteringsförmuläret
 
@@ -92,7 +90,7 @@ angular.module('redthread')
           return scope.threads[i];
         }
       }
-    }
+    };
 
     scope.createThread = function(x,y) {
 
@@ -117,7 +115,7 @@ angular.module('redthread')
 
       //Sker när vi vill spara förändringar av en tråd
 
-      Threads.update({threadId: scope.thread._id}, scope.thread, function(thread){});
+      Threads.update({threadId: scope.thread._id}, scope.thread, function(){});
       $rootScope.$broadcast('redraw');
     };
 
@@ -144,7 +142,7 @@ angular.module('redthread')
       //Körs när en av en tråds valmöjligheter ändrat vilken tråd som valet leder till
 
       $rootScope.$broadcast('redraw');
-    }
+    };
 
 
     scope.removeThread = function(id) {
@@ -163,7 +161,7 @@ angular.module('redthread')
       }
     };
 
-    scope.createCharacter = function(x,y) {
+    scope.createCharacter = function() {
 
       //Sker vid skapande av karaktär
       //Leder rakt in i karaktärsändringsformuläret via html
@@ -189,12 +187,14 @@ angular.module('redthread')
       //letar efter om någon släkting har en specifik klass
 
       if (element && element.className !== undefined) {
-        if (element.className.split(' ').indexOf(classname)>=0) return element;
+        if (element.className.split(' ').indexOf(classname)>=0) {
+          return element;
+        }
         return element.parentNode && scope.ancestorHasClass(element.parentNode, classname);
       } else {
         return false;
       }
-    }
+    };
 
 
     //hantera enbart musklick & inte drag, dvs. klick men inte drag
@@ -222,7 +222,7 @@ angular.module('redthread')
 
         var dist = Math.sqrt( Math.pow((startMouse.x-e.pageX), 2) + Math.pow((startMouse.y-e.pageY), 2) );
         if (dist === 0) {
-          if (e.target == vp[0]) {
+          if (e.target === vp[0]) {
 
             //Skapa tråd, men bara om vi klickat direkt exakt på kartan och inget annat
 

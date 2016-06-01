@@ -77,7 +77,7 @@ angular.module('redthread')
 
         $rootScope.$broadcast('redraw');
         for (var i = scope.characters.length - 1; i >= 0; i--) {
-          var character = scope.characters[i]
+          var character = scope.characters[i];
           if (character._id === id) {
             scope.character = character;
             buildCharacter(scope.character.appearance);
@@ -105,7 +105,7 @@ angular.module('redthread')
         });
         var load = protLoad.join(' ');
         scope.character.appearance = load;
-        Characters.update({characterId: scope.character._id}, scope.character, function(character){
+        Characters.update({characterId: scope.character._id}, scope.character, function(){
           scope.editChar();
         });
       };
@@ -312,7 +312,6 @@ angular.module('redthread')
           scope.randomize();
         } else {
           angular.forEach(load.split(' '), function(value) {
-            console.log(value)
             var slotInfo = value.split(':');
             var type = slotInfo[0].split('_')[0];
             var name = slotInfo[0].split('_')[1];
@@ -336,17 +335,43 @@ angular.module('redthread')
       };
       scope.select(['face', 'ears', 'nose']);
 
-      scope.changeColor = function (array, color, types) {
-        //ur bruk atm TODO
-        // angular.forEach(types, function(type) {
-        //   scope.paperdoll[type].color = color;
-        // });
-        // angular.forEach(array, function(el) {
-        //   if (el.indexOf('__') === -1) {
-        //     canvas.select(el).animate({'fill': color}, 100);
-        //   }
-        // });
+      scope.updateDoll = function (option, edit, type, name) {
+        if (scope.paperdoll[type].name !== undefined) {
+          // var test = canvas.select('#' + type + '_' + scope.paperdoll[type].name);
+          // test.stop().animate({'opacity': '0'}, 300);
+          // setTimeout(function(){
+          //   test.remove();
+          //   scope.paperdoll[type].name = name;
+          //   scope.select(scope.optionsTree[option].options[edit].select);
+          //   paintCharacter(scope.paperdoll);
+          //   scope.$apply();
+          // },300);
+          scope.paperdoll[type].name = name;
+          scope.select(scope.optionsTree[option].options[edit].select);
+          paintCharacter(scope.paperdoll);
+        } else {
+          scope.paperdoll[type].name = name;
+          scope.paperdoll[type].type = type;
+          scope.paperdoll[type].color = '#';
+          scope.select(scope.optionsTree[option].options[edit].select);
+          paintCharacter(scope.paperdoll);
+        }
+
       };
+
+
+
+      // scope.changeColor = function (array, color, types) {
+      //   ur bruk atm TODO
+      //   angular.forEach(types, function(type) {
+      //     scope.paperdoll[type].color = color;
+      //   });
+      //   angular.forEach(array, function(el) {
+      //     if (el.indexOf('__') === -1) {
+      //       canvas.select(el).animate({'fill': color}, 100);
+      //     }
+      //   });
+      // };
 
 
     };

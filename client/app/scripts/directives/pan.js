@@ -13,30 +13,9 @@ angular.module('redthread')
   //Applicerar möjligheten att använda musen för att dra omkring och utforska
 
   function link(scope, element) {
-    element[0].id = "viewport";
+    element[0].id = 'viewport';
     var vp = element[0], //viewport element
         self = {};
-
-    if(window.addEventListener) {
-
-        //binder mushändelser till funktioner,
-        //drag och släpp körs på dokumentet och inte vp
-        //för att vi vill ha funktionaliteten även när andra element är under musen
-
-      vp.addEventListener('mousedown',startDrag,false);
-      document.body.addEventListener('mousemove',drag,false);
-      document.body.addEventListener('mouseup',stopDrag,false);
-    }
-    else if(window.attachEvent) {
-
-      //binder mushändelser till funktioner,
-      //drag och släpp körs på dokumentet och inte vp
-      //för att vi vill ha funktionaliteten även när andra element är under musen
-
-      vp.attachEvent('onmousedown',startDrag);
-      document.body.attachEvent('onmousemove',drag);
-      document.body.attachEvent('onmouseup',stopDrag);
-    }
 
     setTimeout(function(){
 
@@ -48,13 +27,10 @@ angular.module('redthread')
           'left': -(vp.clientWidth - document.body.clientWidth)/2 + 'px' 
         });
        })();
-    },100)
-    
-
-   
+    },100);
 
     function startDrag(e) {
-      if(Object.keys(self).length === 0 && self.constructor === Object && e.target.id == 'viewport') {
+      if(Object.keys(self).length === 0 && self.constructor === Object && e.target.id === 'viewport') {
 
         //Körs när vi håller ner musknappen över exakt viewport id elementet och var self är ett objekt
 
@@ -93,7 +69,7 @@ angular.module('redthread')
           self.panTop = self.panStartY - self.panEndY;
           
           pageTop-= self.panTop;
-          if (pageTop > 42) pageTop = 42;
+          if (pageTop > 42) {pageTop = 42;}
           
           angular.element(vp).css({ top: pageTop+'px',left: pageLeft+'px' });
         }
@@ -113,7 +89,7 @@ angular.module('redthread')
 
           pageLeft-= self.panLeft;
 
-          if (pageLeft > 42) pageLeft = 42;
+          if (pageLeft > 42) {pageLeft = 42;}
           
           angular.element(vp).css({ left: pageLeft+'px',top: pageTop+'px' });
         }
@@ -131,6 +107,27 @@ angular.module('redthread')
         e=e||event;
         self={};
       }
+    }
+
+    if(window.addEventListener) {
+
+        //binder mushändelser till funktioner,
+        //drag och släpp körs på dokumentet och inte vp
+        //för att vi vill ha funktionaliteten även när andra element är under musen
+
+      vp.addEventListener('mousedown',startDrag,false);
+      document.body.addEventListener('mousemove',drag,false);
+      document.body.addEventListener('mouseup',stopDrag,false);
+    }
+    else if(window.attachEvent) {
+
+      //binder mushändelser till funktioner,
+      //drag och släpp körs på dokumentet och inte vp
+      //för att vi vill ha funktionaliteten även när andra element är under musen
+
+      vp.attachEvent('onmousedown',startDrag);
+      document.body.attachEvent('onmousemove',drag);
+      document.body.attachEvent('onmouseup',stopDrag);
     }
 
 

@@ -50,7 +50,7 @@ angular.module('redthread')
             buildCharacter(character.appearance);
           }
         }
-      };
+      }
 
       function buildCharacter(load) {
 
