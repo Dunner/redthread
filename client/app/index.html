@@ -2,7 +2,7 @@
 <html class="no-js">
   <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>Redthread.io</title>
     <meta name="description" content="">
     <meta name="fragment" content="!">
     <meta name="viewport" content="width=device-width">
@@ -10,7 +10,6 @@
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -42,7 +41,7 @@
 
             <div class="top clear">
               <div class="profilecircle">
-                <svg width="100%" height-"100%" dnr-avatar load="{{thread.character}}" viewBox="90 150 550 1052"></svg>
+                <svg width="100%" height="100%" dnr-avatar load="{{thread.character}}" viewBox="250 150 300 600"></svg>
               </div>
               <div class="increment">
                 #{{thread.increment}}
@@ -103,7 +102,7 @@
           </div>
 
           <div class="tform-inset">
-            <textarea name="text" placeholder="Text" ng-model="thread.text" autofocus="" ></textarea>
+            <textarea name="text" placeholder="Text" ng-model="thread.text" ></textarea>
           </div>
 
           <div class="tform-label">
@@ -113,7 +112,7 @@
             <div class="choices">
               <div class="choice clear" ng-repeat="choice in thread.choices">
                 <div class="alternative">
-                  <input name="choice" type="text" placeholder="Choice {{$index}}" ng-model="choice.text" autofocus="" /></div>
+                  <input name="choice" type="text" placeholder="Choice {{$index}}" ng-model="choice.text" /></div>
                 <div class="go-to">goto:
                   <select name="mySelect"
                     ng-options="threado.increment as threado.increment for threado in threads"
@@ -147,19 +146,19 @@
 
 
       <div class="module-background ng-hide" ng-show="charEdit" ng-click="editChar()"></div>
-      <div id="form-module" class="module ng-hide" ng-show="charEdit">
+      <div class="module ng-hide" ng-show="charEdit">
 
         
 
         <div class="bg-dCont f-white" dnr-paperdoll style="margin-bottom:15px">
 
           <div style="padding: 20px 20px 0 20px">
-            <input name="charactername" type="text" placeholder="John Doe" ng-model="character.name" autofocus="" style="float:none; width: 100%!important;"/>
+            <input name="charactername" type="text" placeholder="John Doe" ng-model="character.name" style="float:none; width: 100%!important;"/>
           </div>
 
           <ul class="charEdit">
             <li>
-              <svg width="80%" height-"100%" viewBox="0 0 744 1052" id="paperdoll"></svg>
+              <svg width="80%" height="100%" viewBox="0 0 744 1052" id="paperdoll"></svg>
 
               <div class="colors">
                 <div class="testbtn button" ng-click="randomize()" style="position:Absolute; bottom:110%; left: 10%; width:80%; height:50px; line-height:50px"><h3>Randomize</h3></div>
@@ -171,7 +170,7 @@
                   </li>
                 </ul>
                 <div id="colorPick" style="position: relative">
-                  <div type="text" ng-model="specificColor" colorpicker-parent="true"></div>
+                  <div ng-model="specificColor" colorpicker-parent="true"></div>
                 </div>
               </div>
             </li>
@@ -190,10 +189,10 @@
               </div>
               <div class="inventory">
                 <div class="itemWrapper" ng-click="updateDoll(option, edit, inventoryOption[0], '')" ng-show="optionsTree[option].options[edit].removeable">
-                  <svg viewBox="0 0 744 1052" id="invEdit"></svg>
+                  <svg viewBox="0 0 744 1052"></svg>
                 </div>
                 <div class="itemWrapper" ng-repeat="item in inventory" ng-click="updateDoll(option, edit, inventoryOption[0], item.name)" ng-class="{'active': paperdoll[optionsTree[option].options[edit].select[0]].name === item.name}">
-                  <svg dnr-characteritem="{{$index}}" viewBox="0 0 744 1052" id="invEdit"></svg>
+                  <svg dnr-characteritem="{{$index}}" viewBox="0 0 744 1052"></svg>
                   <h6 class="text-center">{{item.name}}</h6>
                 </div>
               </div>
@@ -216,9 +215,9 @@
         <div class="mast-head">
           <div class="mast-core">
             <div class="mast-pfeed">
-              <a href="/" ng-click="$root.editing = false">
+              <a href="/" ui-sref="start" ng-click="$root.editing = false">
                 <div class="mast-logo">
-                  <img src="images/pfeed_logo.svg"></img>
+                  <img src="images/pfeed_logo.svg" alt="logo">
                 </div>
                 <div class="mast-info">
                   <div class="site-title">REDTHREAD.IO</div>
@@ -229,7 +228,7 @@
             </div>
             <div class="feed-title">
               <div class="admin-icon cursor about" ui-sref="about">
-                <img  src="images/pfeed_question.svg" style="height: 100%"></img>
+                <img src="images/pfeed_question.svg" style="height: 100%" alt="question mark - about">
               </div>
             </div>
             <div class="mast-admin" module-admin ng-show="$root.state === 'story'"></div>
