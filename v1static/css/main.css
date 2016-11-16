@@ -1,0 +1,228 @@
+/* #1d1f20 - rgb(29,31,32)*/
+
+body, html {
+  background: #fff;
+  height: 100%;
+  width: 100%;
+  font-family: 'Open Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.gamewrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  width: calc( 100% - 100px );
+  height: calc( 100% - 100px );
+}
+@media (max-width:500px){
+  .gamewrapper {
+    height: 100% !important;
+    width: 100% !important;
+  }
+  .game{
+    max-height: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+.game {
+  position: relative;
+  background: #222;
+  margin: 0 auto;
+  max-width: 480px;
+  max-height: 852px;
+  height: 100%;
+  box-shadow: 10px 10px 35px -15px rgba(0,0,0,0.75);
+}
+
+.topper {
+  background: #1d1f20;
+  width: 100%;
+  height: 45px;
+}
+
+.messages-wrapper {
+  height:70%;
+  height: calc( (100% - 65px)/100*70 );
+  width: 100%;
+  position:absolute;
+  top: 45px;
+  left: 0;
+  overflow: hidden;
+  border-top: 5px solid rgba(255,255,255,.03);
+}
+
+#messages {
+  position: absolute;
+  overflow-x:hidden;
+  overflow-y:scroll;
+  height: 100%;
+  width: calc( 100% + 30px );
+}
+#messages * {transition: all 1s ease;}
+.message {
+  width: calc(100% - 15px);
+  overflow: hidden;
+  padding: 5px;
+  margin-bottom: 5px;
+  background: rgba(0,0,0,.06);
+  border-left: 0px solid gray;
+}
+.message.last {
+  padding: 20px 5px;
+  min-height: 80px;
+  margin-top: 15px;
+  background: #222;
+  border-left: 5px solid #D0272D;
+  margin-left:5px;
+}
+
+.message:not(.last) .choices, .message:not(.last) .choice {font-size: 0px; overflow:hidden; padding:0px; background: transparent; margin: 0px; border:0px;}
+.message:not(.last) .question {color: #333;}
+
+
+.question {
+  display:block;
+  color: #ebebeb;
+  font-weight: 800;
+  line-height:30px;
+  padding: 5px;
+  padding-left: 10px;
+}
+
+.choices {
+  background: rgba(0,0,0,.1);
+  padding: 10px;
+}
+.choice {
+  background: rgba(255,255,255,1);
+  padding: 15px;
+  margin-bottom: 5px;
+  cursor: pointer;
+  width: 70%;
+}
+.choice:hover {
+  background: rgba(255,255,255,.6);
+}
+
+.prompt {
+  position:relative;
+  padding: 10px;
+  background: #ebebeb;
+}
+
+.message:not(.last) .prompt {
+  background: transparent;
+}
+
+label {
+  display: block;
+  width: 100%;
+  height: 100%;
+  line-height: 40px;
+}
+
+input {
+  border: 0px;
+  outline: 0;
+  box-shadow: 0;
+  background: rgba(0,0,0,.15);
+  border-bottom: 5px solid rgba(0,0,0,.05);
+  color: black;
+  width:100%;
+  height:50px;
+  line-height:50px;
+  padding: 0 10px;
+  font-size: 30px;
+}
+
+#submit {
+  transition: all 0.3s;
+  position: absolute;
+  right:10px;
+  height:50px;
+  bottom:10px;
+  background: rgba(0,0,0,.05);
+  text-align: center;
+  line-height: 50px;
+  padding: 0 5vw;
+  cursor: pointer;
+}
+#submit:hover {
+  background: white;
+}
+
+#speed-drag {
+  border: 2px solid rgba(255,255,255,.03);
+  position: absolute;
+  bottom: 0px;
+  height: 20px;
+  width: 100%;
+  left: 0px;
+  cursor:col-resize;
+  background: #1d1f20;
+}
+#speed-drag-indicator {
+  pointer-events: none;
+  position: absolute;
+  left: 30%;
+  height: 100%;
+  width: 1px;
+}
+#speed-drag-indicator:after {
+  content: '';
+  display: block;
+  height:100%;
+  background: #fff;
+  position: absolute;
+  left: -4px;
+  width: 6px;
+}
+
+#background-box {
+  background: #ebebeb;
+  position: absolute;
+  overflow:hidden;
+  left: 0px;
+  bottom: 20px;
+  height: 30%;
+  height: calc( (100% - 65px)/100*30 );
+  width: 100%;
+  background-position: center;
+  background-size: auto 100%;
+}#background-box:after{
+  content: '';
+  display: block;
+  position:absolute;
+  top:0px;right:0px;bottom:0px;left:0px;
+  background: -moz-linear-gradient(bottom,  rgba(34,34,34,0) 0%, rgba(34,34,34,0.0) 34%, rgba(34,34,34,1) 100%);
+  background: -webkit-linear-gradient(bottom,  rgba(34,34,34,0) 0%,rgba(34,34,34,0.0) 34%,rgba(34,34,34,1) 100%);
+  background: linear-gradient(to top,  rgba(34,34,34,0) 0%,rgba(34,34,34,0.0) 34%,rgba(34,34,34,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00222222', endColorstr='#222222',GradientType=1 );
+}
+
+
+#character-box {
+  transition: bottom 0.5s ease-in-out;
+  background-position: center;
+  background-size: auto 100%;
+  overflow: hidden;
+  position: absolute;
+  bottom: -200px;
+  height: 100%;
+  width: 100%;
+  margin: 0 auto;
+  left:0;
+  right:0;
+  z-index: 99;
+}
+#character-box.show {bottom:0px}
