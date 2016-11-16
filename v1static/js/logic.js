@@ -9,9 +9,11 @@ var currentRoom = findLocation('start'),
 		speedDragIndicatorElement = document.getElementById('speed-drag-indicator'),
 		speedDragDragging = false,
 		readingSpeed = 30,
-		playerName = 'Kalle';
+		playerName = 'Kalle',
+		lastChoice = {locationName:'',characterName:'',threadId:0};
 
-nextMessage();
+goLocation('start');
+
 document.body.onkeyup = function(e){
   if(e.keyCode == 32){
   	//32 är Space för snabba hopp i texten, av debuggsyfte
@@ -112,6 +114,18 @@ function displayThread(thread) {
 			newChoice.innerHTML = choices[x].text;
 			newChoice.setAttribute('choice', x);
 			choicesContainer.appendChild(newChoice);
+		}
+
+		//Spara tråd som senaste valmöjligheten
+		if (choices.length > 1) {
+			var tempName = '';
+			!currentCharacter ? tempName = '' : tempName = currentCharacter.name;
+
+			lastChoice = {
+				locationName: currentRoom.name,
+				characterName: tempName,
+				threadId: thread.id
+			}
 		}
 
 		threadBox.appendChild(choicesContainer);
@@ -234,7 +248,17 @@ function leaveCharacter() {
 	characterImageElement.className = '';
 }
 
-
+function youDie() {
+	if (lastChoice.characterName) {
+		//Gå till plats & karaktär med karaktärstråd
+		// goLocation(lastChoice.locationName);
+		goCharacter(lastChoice.characterName, lastChoice.threadId);
+	} else {
+		//Gå till plats med platstråd
+		goLocation(lastChoice.locationName, lastChoice.threadId);
+	}
+	lastChoice = {};
+}
 
 //Scrollskötning
 function scrollToBottom(element, duration) {
@@ -282,18 +306,18 @@ function adjustReadSpeed(e) {
   	var indicatorX = Math.floor(e.pageX - posFromLeft(speedDragElement));
   	var draggerWidth = speedDragElement.offsetWidth;
   	readingSpeed = ((indicatorX / draggerWidth) * 100).toFixed(2);
-  	console.log(indicatorX,draggerWidth,readingSpeed);
+  	console.log(posFromLeft(speedDragElement));
   	speedDragIndicatorElement.style.left = indicatorX.toFixed(2) + 'px';
 	}
 	function posFromLeft(obj) {
 		//Linear upp muspositionen med reglagets sidoffset så vi kan räkna ut var på elementet vi drar någonstans.
 		var offLeft = 0;
-		if (obj.offsetParent) {
-			do {
-				offLeft += obj.offsetLeft;
-			} while (obj == obj.offsetParent);
-			return offLeft;
-		}
+
+	  while (obj) {
+			offLeft += obj.offsetLeft  + obj.clientLeft;
+			obj = obj.offsetParent;
+	  }
+	  return offLeft;
 	}
 }
 

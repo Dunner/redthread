@@ -15,10 +15,10 @@ var characters = [
 			},
 			{
 				"id":2,
-				"text": "Ronny Räv springer mot dig, vad gör du?",
+				"text": "Ronny Räv springer emot dig, vad gör du?",
 				"choices": [
 					{
-						"text": "Lek död",
+						"text": "Spela död",
 						"action": function(){ leaveCharacter(); goLocation('skogen', 207); }
 					},
 					{
@@ -41,19 +41,19 @@ var characters = [
 						"action": function(){ goCharacter('raven', 31); }
 					},
 					{
-						"text": "Spotta blåbären mot Ronny Räv i en sista protest",
+						"text": "Spotta blåbären på Ronny Räv i en sista patetiskt protest",
 						"action": function(){ goCharacter('raven', 13); }
 					}
 				]
 			},
 			{
 				"id":13,
-				"text": "Ett förfärligt vrål hörs från grottans öppning!",
+				"text": "Ett förfärligt vrål hörs ifrån grottans mynning!",
 				"choices": []
 			},
 			{
 				"id":14,
-				"text": "\"AAh, det är björnen!\" skriker Ronny Räv och springer iväg samma väg han kom",
+				"text": "\"AAh, det är björnen!\" skriker Ronny Räv och flyr iväg samma väg han kom",
 				"choices": [
 					{
 						"text": "Vänd dig om långsamt",
@@ -68,10 +68,10 @@ var characters = [
 			},
 			{
 				"id":22,
-				"text": "\"AAh, det är björnen igen!\" skriker Ronny Räv och flyger in i skogen för att aldrig igen återvända",
+				"text": "\"AAh, det är björnen igen!\" skriker Ronny Räv och flyger in i skogen för att aldrig mer återvända",
 				"choices": [
 					{
-						"text": "Hoppa av glädje!",
+						"text": "Skutta av glädje!",
 						"action": function(){ leaveCharacter(); goCharacter('bjornen', 11); }
 					}
 				]
@@ -79,7 +79,7 @@ var characters = [
 
 			{
 				"id":31,
-				"text": "Ronny Räv hinner ifatt er",
+				"text": "Ronny Räv hinner ifatt dig",
 				"choices": []
 			},
 			{
@@ -87,8 +87,8 @@ var characters = [
 				"text": "Ronny Räv äter upp dig",
 				"choices": [
 					{
-						"text": "Börja om",
-						"action": function(){ leaveCharacter(); goLocation('start'); }
+						"text": "Försök igen",
+						"action": function(){ leaveCharacter(); youDie(); }
 					}
 				]
 			},
@@ -126,12 +126,12 @@ var characters = [
 			},
 			{
 				"id":3,
-				"text": "Blåbär, jag älskar blåbär",
+				"text": "Blåbär, jag älskar blåbär!",
 				"choices": []
 			},
 			{
 				"id":4,
-				"text": "säg mig kan du visa mig vart du hittat dem",
+				"text": "säg mig kan du visa vart du hittat dem",
 				"choices": [
 					{
 						"text": "Ta med björnen tillbaka till stigen!",
@@ -150,14 +150,14 @@ var characters = [
 			},
 			{
 				"id":12,
-				"text": "Säg, vart är mina blåbär? Jag börjar bli hungrig",
+				"text": "Säg, vart är mina blåbär? Jag börjar bli förfärligt hungrig",
 				"choices": [
 					{
 						"text": "Peka ut blåbären vid sidan av stigen!",
 						"action": function(){ goCharacter('bjornen', 13); }
 					},
 					{
-						"text": "Ignorera björnen och följ stigen ned till vattnet",
+						"text": "Följ stigen ned till vattnet",
 						"action": function(){ leaveCharacter(); goLocation('floden'); }
 					}
 				]
@@ -176,7 +176,7 @@ var characters = [
 						"action": function(){ goCharacter('bjornen', 15); }
 					},
 					{
-						"text": "Ignorera björnen och följ stigen ned till vattnet",
+						"text": "Lämna björnen och följ stigen ned till vattnet",
 						"action": function(){ leaveCharacter(); goLocation('floden', 303); }
 					}
 				]
@@ -198,12 +198,12 @@ var characters = [
 			},
 			{
 				"id":21,
-				"text": "Såvitt jag vet växer blåbär inte under vatten",
+				"text": "- Såvitt jag vet växer blåbär inte under vatten, säger björnen frustrerat",
 				"choices": []
 			},
 			{
 				"id":22,
-				"text": "Och nu är jag riktigt hungrig, och du ser faktiskt ganska smaskig ut",
+				"text": "- Nu är jag vrålhungrig, och du ser faktiskt ganska smaskig ut!",
 				"choices": []
 			},
 			{
@@ -211,8 +211,8 @@ var characters = [
 				"text": "Björnen åt upp dig",
 				"choices": [
 					{
-						"text": "Börja om",
-						"action": function(){ leaveCharacter(); goLocation('start'); }
+						"text": "Försök igen",
+						"action": function(){ leaveCharacter(); youDie(); }
 					}
 				]
 			},
@@ -237,7 +237,7 @@ var characters = [
 			},
 			{
 				"id":2,
-				"text": "Vad svarar du bävern?",
+				"text": "Vad svarar du Bert Bäver?",
 				"choices": [
 					{
 						"text": "Nu är den min; fann den, vann den!",
@@ -256,7 +256,7 @@ var characters = [
 			},
 			{
 				"id":4,
-				"text": "Bävern knuffar flotten med dig på över floden",
+				"text": "Bert Bäver knuffar flotten med dig på över floden",
 				"choices": [
 					{
 						"text": "Stig iland!",
@@ -266,16 +266,16 @@ var characters = [
 			},
 			{
 				"id":11,
-				"text": "Bävern blir arg och välter flotten",
+				"text": "Bert Bäver blir arg och välter flotten",
 				"choices": []
 			},
 			{
 				"id":12,
-				"text": "Du förs iväg av strömmen och drunknar",
+				"text": "Du förs iväg av strömmen",
 				"choices": [
 					{
-						"text": "Börja om",
-						"action": function(){ leaveCharacter(); goLocation('start'); }
+						"text": "Försök igen",
+						"action": function(){ leaveCharacter(); youDie(); }
 					}
 				]
 			},

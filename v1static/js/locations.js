@@ -2,7 +2,7 @@ var locations = [
 
 	{
 		"name": "start",
-		"image": "",
+		"image": "./images/skogen.jpg",
 		"threads": [
 			{
 				"id":0,
@@ -61,7 +61,7 @@ var locations = [
 						"action": function(){ goLocation('start'); }
 					},
 					{
-						"text": "Försök smyga förbi räven",
+						"text": "Skutta djupare in i skogen",
 						"action": function(){ goCharacter('raven', 0); }
 					}
 				]
